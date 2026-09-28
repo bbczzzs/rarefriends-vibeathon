@@ -1,14 +1,14 @@
 # Moonshot 🚀
 
-![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/moonshot-demo.gif)
+![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/49bcd6c/media/moonshot-demo.gif)
 
 🎮 **Play: https://bbczzzs.github.io/moonshot/** · 📦 [Source](https://github.com/bbczzzs/moonshot)
 
 🎬 [Watch the full recording (MP4)](https://github.com/bbczzzs/moonshot/blob/main/media/moonshot-demo.mp4)
 
-| Liftoff | Flight + fuel cans | Supernova launch | Flames tab |
+| Liftoff | Flight: cans + eject half | Supernova launch | Flames tab + missions |
 |---|---|---|---|
-| ![Liftoff](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/liftoff.png) | ![Flight](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/flight.png) | ![Supernova](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/supernova.png) | ![Flames](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/flames.png) |
+| ![Liftoff](https://raw.githubusercontent.com/bbczzzs/moonshot/49bcd6c/media/liftoff.png) | ![Flight](https://raw.githubusercontent.com/bbczzzs/moonshot/49bcd6c/media/flight.png) | ![Supernova](https://raw.githubusercontent.com/bbczzzs/moonshot/49bcd6c/media/supernova.png) | ![Flames](https://raw.githubusercontent.com/bbczzzs/moonshot/49bcd6c/media/flames.png) |
 
 **Project name**
 Moonshot
@@ -34,9 +34,15 @@ Rounds of about 15 seconds:
 
 **Flame rank + Hall of Flames:** every RF you burn earns Flame XP (Spark → Ember → Blaze → Inferno → Supernova). The Flames tab shows your burn receipt and a burn leaderboard.
 
+**Eject half** banks 50% of your ride at the current multiplier and lets the rest keep flying. Each half is an independent fair ride, so the odds don't change; it's the classic crash-game hedge.
+
+**Missions:** five session goals (eject above 3x, back 3 riders who land, throw 10 fuel cans, eject half then land the rest, fly a Supernova) pay Flame XP. Finishing all of them unlocks the Astronaut skin, which can't be bought.
+
+**Real supply:** the Flames tab can read the real $RAREFRIENDS `totalSupply()` on Robinhood mainnet (one read-only call, on demand; token address from the FriendSDK deployment config) and shows the session burn as a share of it.
+
 **Options:** **auto eject**, **auto-launch** (5 to 50 rounds, or indefinitely), and **Burn for glory**, which burns 10% of each payout for 3× XP.
 
-Drawn in the Rare Friends world style with the FriendSDK game palette, ink outlines, checker-dither shading and a floating meadow island. The sky dithers from paper into space as you climb. The UI follows the SDK frame's paper-and-ink look and is kept simple: one bet panel, one stage, and three tabs (Crew · Flames · Hangar).
+Drawn in the Rare Friends world style with the FriendSDK game palette, ink outlines, checker-dither shading and a floating meadow island. Crew walk the gantry arm onto their seats, the pad erupts in cartoon smoke at liftoff, floating sky islands drift past, and Friends talk in pixel sign bubbles ("WHEE!", "THX!", "AAA!"). The sky dithers from paper into space as you climb. The UI follows the SDK frame's paper-and-ink look and is kept simple: one bet panel, one stage, and three tabs (Crew · Flames · Hangar).
 
 **How does it use Rare Friends?**
 - **Your verified Friend is the pilot.** The SDK handles the wallet, Friend selection and the ownership gate, and the pilot's canonical on-chain sprite is read with the SDK's `createFriendReader()`. When you sit a round out, your Friend watches from the HQ stall.
@@ -78,7 +84,7 @@ Crash point: `U ~ Uniform[0,1)`, `C = floor(100/(1−U))/100` (C is the highest 
 All balances, bets, payouts and burns are **simulated demo RF** (1,000 to start), labelled in the UI. Stake ≥ 1 RF. Eject payout = `ride × multiplier` (minus 10% if Burn for glory is on). No consumables.
 
 **Controls**
-Space: bet / cancel / eject · tap the sky to eject · F: fuel can · M: sound. Every action also has a button for touch. The reduced-motion toggle follows the system setting. The runtime's pause freezes the flight without forfeiting anything.
+Space: bet / cancel / eject · H: eject half · tap the sky to eject · F: fuel can · M: sound. Every action also has a button for touch. The reduced-motion toggle follows the system setting. The runtime's pause freezes the flight without forfeiting anything.
 
 **Playable demo / how to run**
 https://bbczzzs.github.io/moonshot/ (GitHub Pages) requires a browser wallet on **Robinhood mainnet (4663)** holding a hardwired Generations NFT (generation ≥ 1). This is the SDK's standard gate. Connecting only reads: no RF, signatures or transactions. The GIF and MP4 above show gameplay for anyone without a wallet.
@@ -92,7 +98,7 @@ npx friendsdk dev games/moonshot
 **What have you tested?**
 All of these pass:
 - `node verify-sdk-math.mjs`: 500,000 simulated launches. Instant bust 1.00%. Returns 89.97% / 90.08% / 89.99% / 89.68% at 1.5x / 2x / 5x / 10x targets. Fuel burn exactly 10.00% of volume. Launch Pool balanced. Supernova 20% fuel, glory 10% of payout, fuel can 1 RF, ledger totals and rank ladder asserted.
-- `node test-interaction.mjs` at **960 px and 390 px**, in the real sandboxed runtime with the SDK's mock wallet: joining during boarding, liftoff, a fuel can burning exactly 1 RF, pausing mid-flight (the multiplier freezes), resuming, ejecting or a valid crash, crash history, a Hangar purchase burning exactly 25 RF, the Flames tab, Burn for glory, auto-launch, and the sound toggle. No browser errors.
+- `node test-interaction.mjs` at **960 px and 390 px**, in the real sandboxed runtime with the SDK's mock wallet: joining during boarding, liftoff, a fuel can burning exactly 1 RF, Eject half, pausing mid-flight (the multiplier freezes), resuming, ejecting or a valid crash, crash history, a Hangar purchase burning exactly 25 RF, the Flames tab and missions, Burn for glory, auto-launch, and the sound toggle. No browser errors.
 - `npm run typecheck`: strict TypeScript across all game sources, 0 errors.
 - `npx friendsdk check games/moonshot` (valid), and `npx friendsdk test` at 1200 px and 360 px.
 
