@@ -1,61 +1,82 @@
 # Moonshot 🚀
 
 **Category:** Token Activity
-**Builder:** Ishan — GitHub: [bbczzzs](https://github.com/bbczzzs) · X: TBD
-**One-sentence pitch:** A crash-style multiplier game where your Rare Friend pilots a rocket — stake RF, ride the multiplier as high as you dare, and cash out before it crashes; every crash burns the stake.
+**Builder:** Ishan · GitHub [bbczzzs](https://github.com/bbczzzs) · X: TBD
+**One-sentence pitch:** A live crash game where your Rare Friend pilots a rocket carrying a crew of real Generations Friends, and **10% of every stake burns as rocket fuel on every launch, win or lose**, with a fresh launch every ~15 seconds.
+
+![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/moonshot-demo.gif)
 
 ## Demo
 
-🎮 **Play it:** https://bbczzzs.github.io/moonshot/ (public simulated preview on GitHub Pages — no wallet needed to view)
+🎮 **Play:** https://bbczzzs.github.io/moonshot/ (GitHub Pages)
+
+- **Requirements:** a browser wallet on **Robinhood mainnet (4663)** holding a hardwired Rare Friends Generations NFT (generation ≥ 1). This is the SDK's standard ownership gate, the same as every SDK entry. Connecting only reads: no RF, no signatures, no transactions.
+- **No wallet?** The GIF above and the [full recording (MP4)](https://github.com/bbczzzs/moonshot/blob/main/media/moonshot-demo.mp4) show real gameplay.
+
+| Liftoff | Flight | Crash | Hangar |
+|---|---|---|---|
+| ![Liftoff](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/liftoff.png) | ![Flight](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/flight.png) | ![Crash](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/crash.png) | ![Hangar](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/hangar.png) |
 
 ## Source
 
-https://github.com/bbczzzs/moonshot — game lives in `games/moonshot/`
+https://github.com/bbczzzs/moonshot. The game is in `games/moonshot/` (full rules, math and checks in its [README](https://github.com/bbczzzs/moonshot/blob/main/games/moonshot/README.md)).
 
-### Run it locally
+**Stack:** FriendSDK **v0.1.2** (runtime, wallet/Friend selection, ownership gate, `createFriendReader` sprites) · React 19 · Canvas 2D pixel renderer · WebAudio. All art is drawn in code and all sound is synthesized.
 
-- Node.js 22+
-- `npm install`
-- `npx friendsdk dev games/moonshot` — local preview (mock wallet + sample Friends)
-- `npx friendsdk build games/moonshot --outdir dist` — static build, host `dist/` on any HTTPS static host
-
-**Stack:** FriendSDK v0.1.2 · React 19 · Canvas 2D · WebAudio. All art drawn in code, all sound synthesized — zero external assets.
+```sh
+git clone https://github.com/bbczzzs/moonshot && cd moonshot
+npm install
+npx friendsdk dev games/moonshot                    # local preview (real wallet gate)
+npx friendsdk build games/moonshot --outdir dist    # static build
+```
 
 ## How to play
 
-1. The runtime connects your wallet and you pick your Friend — they're the pilot.
-2. Choose a stake: 10 / 25 / 50 / 100 RF, or a custom amount. You start with 1,000 demo RF.
-3. Hit **LAUNCH**. The rocket climbs and the multiplier rises from 1.00x, drawn live as a burning comet trail.
-4. Hit **CASH OUT** (the button, tap the sky, or Space) before the crash to win `stake × multiplier`.
-5. Crash first and the stake **burns** — watch the 🔥 Burned ticker climb.
-6. **FLY AGAIN** — rounds take ~15 seconds, restart is instant.
+1. **Boarding (6 s):** crew Friends hop onto the rocket's outrigger seats. Pick a stake and hit **Join this launch** (or Space). Your Friend climbs into the cockpit dome. You can cancel for a full refund until liftoff.
+2. **Liftoff:** fuel burns, and the multiplier climbs as `m(t) = e^(0.12t)` (2x at ~5.8 s, 10x at ~19 s). You pass the Moon at 2x, Mars at 5x, Saturn at 10x, and beyond.
+3. **Eject:** press **Cash out**, Space, or tap the sky to parachute out with `ride × multiplier`. Crew eject at their own targets.
+4. **Crash:** everyone still aboard burns with the rocket.
+
+**Auto eject** (target multiplier) and **Auto-launch** (5 / 10 / 25 / 50 / ∞ rounds) keep the loop running hands-free. **M** toggles sound. There's a reduced-motion toggle. The runtime's pause freezes the flight without forfeiting anything.
 
 ## RF costs, probabilities, rewards
 
-- Stakes are player-chosen (min 1 RF). Starting balance: 1,000 demo RF, simulated.
-- Crash point: `U ~ Uniform[0,1)`; if `0.97/(1-U) < 1` → `1.00x` (exactly 3% of rounds — "instant crash"); otherwise `max(1.01, floor(0.97/(1-U) × 100) / 100)`.
-- `P(C ≥ m) = 0.97 / m` for `m ≥ 1.01`. **House edge: 3%** — any fixed cash-out has EV 0.97 per 1 RF staked.
-- Growth: `m(t) = e^0.1t` → 2x at ~7s, 10x at ~23s.
-- Cash out at `m` → receive `stake × m`. Crash → stake burned, added to the session burn ticker.
-- No consumables. **All RF is simulated demo RF**, labeled as such everywhere in the UI — no real funds move in this build.
+**All RF is simulated demo RF** (1,000 to start), labelled in the UI. No real funds move.
 
-## Checks / tests
-
-- `node verify-sdk-math.mjs` — 200,000 simulated rounds: 3.003% instant crash, mean return ≈ 0.97 at 1.5x / 2x / 5x / 10x cash-outs.
-- `node test-interaction.mjs` — full round in headless Chromium (launch → countdown → cash out / crash → fly again), runtime pause lifecycle, mute + reduced-motion toggles. PASS.
-- `friendsdk check` — valid. `friendsdk test` — PASS, no console errors.
-- Screenshots reviewed at desktop (1280px) and mobile (360px/390px): no overflow, readable at all sizes.
-
-## Known issues
-
-- The pilot is the player's canonical on-chain Friend sprite (16x16, idle-up frames), voxel-rendered and animated; when the sprite read is unavailable (offline/sandbox), a deterministic generative pixel pilot is used instead. The topbar still labels "Pilot · Friend #id".
-- `game.json` carries a placeholder chance-game definition required by the runtime schema; the crash game doesn't use the chance-game economy actions.
-- Session stats reset on reload — persistence APIs are still on the Rare Friends roadmap.
-
-## Asset credits
-
-All scene art drawn in code (Canvas 2D voxel/chunky-pixel style), all audio synthesized live (WebAudio). The pilot is the player's own selected Friend's canonical on-chain sprite (their NFT, rendered client-side). Pixel font is Press Start 2P (OFL-licensed, bundled as woff2).
+| | Rule |
+|---|---|
+| Stake | ≥ 1 RF, player-chosen |
+| **Fuel burn** | **10% of every stake, burned at liftoff, every launch, every pilot** |
+| Ride | The other 90% of the stake |
+| Crash point | `U ~ Uniform[0,1)`, `C = floor(100/(1−U))/100` (the highest multiplier reached) |
+| Odds | `P(C ≥ m) = 1/m` for two-decimal targets m ≥ 1.01. About 1% of launches bust at 1.00x |
+| Payout | Eject at m → `ride × m`. The expected return at any target is **exactly 90%** of stake |
+| House edge | 10%, **all of it burned**. The house keeps nothing |
+| Crash | Riders aboard lose their ride to the **Launch Pool**, which pays ejectors (zero-sum in expectation) |
+| Hangar | 5 rocket skins and 4 exhaust trails (free to 300 RF), **100% burned**, cosmetic only, no odds change |
+| Consumables | None |
 
 ## Why Token Activity
 
-Every round is an RF spend event and every crash is a burn event — the highest-frequency burn loop we could design: a full stake → cash-out-or-burn cycle every ~15 seconds. The always-visible session dashboard (RF staked / RF burned / rounds played) is the activity ledger. The crash math and ledger live in an isolated, documented `economy.ts` module, ready to point at official on-chain plumbing when the Rare Friends team ships it.
+- **Frequency:** every launch is a spend event for every pilot aboard and a guaranteed burn event. A launch runs about every 15 seconds, and auto-launch repeats it without input.
+- **Volume:** 10% of all staked volume is burned. Hangar purchases add a second, 100% burn sink with no prize liability.
+- **Visible:** a session burn counter in the top bar, plus a **Furnace** card showing RF burned per minute and fuel per launch. Per-launch fuel and Launch Pool totals appear in the crew panel.
+- **Crowd:** a crew of up to 8 real Generations Friends (canonical on-chain sprites) bets in every launch alongside you (simulated in this preview). At launch these seats would be real holders, and every one of them burns fuel.
+
+## Checks
+
+- `node verify-sdk-math.mjs`: 500,000 simulated launches. Instant bust 1.00%. Returns 89.97% / 90.08% / 89.99% / 89.68% at 1.5x / 2x / 5x / 10x. Fuel burn 10.00% of volume. Launch Pool balanced. Ledger and hangar arithmetic asserted. **PASS**
+- `node test-interaction.mjs 960` and `390`: in the real sandboxed runtime (SDK mock wallet), covering joining during boarding, liftoff, pause freeze mid-flight, resume, eject (or a valid crash), history, a hangar purchase burning exactly 25 RF, auto-launch, and the sound toggle. **PASS**, no browser errors
+- `npx friendsdk check games/moonshot`: valid. `npx friendsdk test games/moonshot --width 1200` and `--width 360`: **PASS**
+
+## Known issues
+
+- Crew stakes and targets are simulated; the SDK has no multiplayer.
+- `game.json` holds the placeholder chance-game definition the runtime schema requires. Moonshot uses its own documented ledger (`economy.ts`), not the chance-game actions. Going live needs a round contract: a fuel `burn()`, a pool that escrows rides and pays ejectors, and a Dice/VRF crash seed committed before boarding closes.
+- Balances, cosmetics and history reset on reload (no SDK storage).
+- If the pilot's art can't be read (slow RPC), a labelled stand-in sprite is shown.
+- The GIF and screenshots come from a local harness mounting the same game component (the wallet screen isn't shown). Automated tests use the SDK's mock wallet. A real-wallet playthrough of this version is pending.
+
+## Asset credits
+
+All scenery, rocket, planets, particles and UI are drawn in code. All audio is synthesized with WebAudio. Friend sprites are canonical Rare Friends Generations artwork via FriendSDK (see its `NOTICE.md`). Pixel font: Press Start 2P (OFL).
