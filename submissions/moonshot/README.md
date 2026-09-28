@@ -24,7 +24,7 @@ A live crash game where your Rare Friend pilots a rocket carrying a crew of real
 
 **What did you build?**
 Rounds of about 15 seconds:
-- **Boarding (6 s):** crew Friends hop onto the rocket's outrigger seats, and you join with a stake. Your own Friend climbs into the cockpit dome.
+- **Boarding (6 s):** crew Friends walk the gantry arm onto the rocket's outrigger seats, and you join with a stake. Your own Friend climbs into the cockpit dome.
 - **Liftoff:** fuel burns, and the multiplier climbs as `m(t) = e^(0.12t)`. Landmarks sit at the altitude of their multiplier: the **Moon at 2x**, satellites at 3x, **Mars at 5x**, **Saturn at 10x**, then a nebula, a black hole and a galaxy.
 - **Fuel cans:** mid-flight, throw a **1 RF can (burned 100%)** at any rider. They get a flame aura, and the crowd throws cans too. If the rider you backed ejects safely, you earn **backer XP** (3 XP per can × their multiplier) and their parachute turns signal green with a ★. Backing pays in status, never RF.
 - **Eject:** cash out (button, Space, or tap the sky) and your Friend parachutes out with `ride × multiplier`. Crew eject at their own targets.
@@ -56,7 +56,7 @@ Drawn in the Rare Friends world style with the FriendSDK game palette, ink outli
 | **Supernova fuel** | **20%** on Supernova launches (every 300 RF burned by all pilots) |
 | **Fuel cans** | **1 RF each, burned 100%**, thrown at riders mid-flight |
 | **Burn for glory** | Optional: **10% of each payout burned** for 3× Flame XP |
-| **Hangar** | 5 rocket skins and 4 trails (free to 300 RF), **burned 100%**, cosmetic only |
+| **Hangar** | 4 paid rocket skins and 3 paid trails (25–300 RF), **burned 100%**, cosmetic only |
 
 The house edge equals the fuel and **all of it is burned**; the house keeps nothing. Riders still aboard at the crash lose their ride to the **Launch Pool**, which pays everyone who ejected (zero-sum in expectation). Every launch is a spend event and a guaranteed burn event for every pilot aboard. On top of that come voluntary sinks players *want* to use: cans (social), glory (status) and the Hangar (style). Supernova events spike the burn for everyone.
 
@@ -99,6 +99,7 @@ npx friendsdk dev games/moonshot
 All of these pass:
 - `node verify-sdk-math.mjs`: 500,000 simulated launches. Instant bust 1.00%. Returns 89.97% / 90.08% / 89.99% / 89.68% at 1.5x / 2x / 5x / 10x targets. Fuel burn exactly 10.00% of volume. Launch Pool balanced. Supernova 20% fuel, glory 10% of payout, fuel can 1 RF, ledger totals and rank ladder asserted.
 - `node test-interaction.mjs` at **960 px and 390 px**, in the real sandboxed runtime with the SDK's mock wallet: joining during boarding, liftoff, a fuel can burning exactly 1 RF, Eject half, pausing mid-flight (the multiplier freezes), resuming, ejecting or a valid crash, crash history, a Hangar purchase burning exactly 25 RF, the Flames tab and missions, Burn for glory, auto-launch, and the sound toggle. No browser errors.
+- **Real-wallet playtest: done** by the builder on the public GitHub Pages preview (Robinhood mainnet, owned hardwired Generations Friend).
 - `npm run typecheck`: strict TypeScript across all game sources, 0 errors.
 - `npx friendsdk check games/moonshot` (valid), and `npx friendsdk test` at 1200 px and 360 px.
 
