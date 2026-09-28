@@ -1,6 +1,6 @@
 # Moonshot 🚀
 
-![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/5a6381a/media/moonshot-demo.gif)
+![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/moonshot-demo.gif)
 
 🎮 **Play: https://bbczzzs.github.io/moonshot/** · 📦 [Source](https://github.com/bbczzzs/moonshot)
 
@@ -8,7 +8,7 @@
 
 | Liftoff | Flight + fuel cans | Supernova launch | Flames tab |
 |---|---|---|---|
-| ![Liftoff](https://raw.githubusercontent.com/bbczzzs/moonshot/5a6381a/media/liftoff.png) | ![Flight](https://raw.githubusercontent.com/bbczzzs/moonshot/5a6381a/media/flight.png) | ![Supernova](https://raw.githubusercontent.com/bbczzzs/moonshot/5a6381a/media/supernova.png) | ![Flames](https://raw.githubusercontent.com/bbczzzs/moonshot/5a6381a/media/flames.png) |
+| ![Liftoff](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/liftoff.png) | ![Flight](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/flight.png) | ![Supernova](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/supernova.png) | ![Flames](https://raw.githubusercontent.com/bbczzzs/moonshot/d35dba2/media/flames.png) |
 
 **Project name**
 Moonshot
@@ -26,7 +26,7 @@ A live crash game where your Rare Friend pilots a rocket carrying a crew of real
 Rounds of about 15 seconds:
 - **Boarding (6 s):** crew Friends hop onto the rocket's outrigger seats, and you join with a stake. Your own Friend climbs into the cockpit dome.
 - **Liftoff:** fuel burns, and the multiplier climbs as `m(t) = e^(0.12t)`. Landmarks sit at the altitude of their multiplier: the **Moon at 2x**, satellites at 3x, **Mars at 5x**, **Saturn at 10x**, then a nebula, a black hole and a galaxy.
-- **Fuel cans:** mid-flight, throw a **1 RF can (burned 100%)** at any rider. They get a flame aura, and the crowd throws cans too.
+- **Fuel cans:** mid-flight, throw a **1 RF can (burned 100%)** at any rider. They get a flame aura, and the crowd throws cans too. If the rider you backed ejects safely, you earn **backer XP** (3 XP per can × their multiplier) and their parachute turns signal green with a ★. Backing pays in status, never RF.
 - **Eject:** cash out (button, Space, or tap the sky) and your Friend parachutes out with `ride × multiplier`. Crew eject at their own targets.
 - **Crash:** everyone still aboard burns with the rocket.
 
@@ -53,6 +53,16 @@ Drawn in the Rare Friends world style with the FriendSDK game palette, ink outli
 | **Hangar** | 5 rocket skins and 4 trails (free to 300 RF), **burned 100%**, cosmetic only |
 
 The house edge equals the fuel and **all of it is burned**; the house keeps nothing. Riders still aboard at the crash lose their ride to the **Launch Pool**, which pays everyone who ejected (zero-sum in expectation). Every launch is a spend event and a guaranteed burn event for every pilot aboard. On top of that come voluntary sinks players *want* to use: cans (social), glory (status) and the Hangar (style). Supernova events spike the burn for everyone.
+
+**Burn projection (illustrative, not measured).** Assumptions: each player averages 40 launches a day at 10 RF, 10% of launches are Supernovas, players throw a fuel can every other launch, and 30% of players use Burn for glory. Hangar purchases are excluded. Per launch that's 1.10 RF fuel + 0.50 RF cans + 0.27 RF glory = **1.87 RF burned per 10 RF staked (≈18.7% of volume)**, or about **75 RF per player per day**.
+
+| Daily players | RF burned / day | RF burned / year |
+|---|---|---|
+| 50 | 3,740 | ≈1.4M |
+| 500 | 37,400 | ≈13.7M |
+| 5,000 | 374,000 | ≈137M |
+
+Live, the Supernova threshold (300 RF in the preview) would scale with volume to keep Supernovas near 10% of launches.
 
 **What would be on-chain?**
 Nothing in this build: no contracts or transactions, as the vibeathon asks. A live version would need a round contract where:
@@ -83,6 +93,7 @@ npx friendsdk dev games/moonshot
 All of these pass:
 - `node verify-sdk-math.mjs`: 500,000 simulated launches. Instant bust 1.00%. Returns 89.97% / 90.08% / 89.99% / 89.68% at 1.5x / 2x / 5x / 10x targets. Fuel burn exactly 10.00% of volume. Launch Pool balanced. Supernova 20% fuel, glory 10% of payout, fuel can 1 RF, ledger totals and rank ladder asserted.
 - `node test-interaction.mjs` at **960 px and 390 px**, in the real sandboxed runtime with the SDK's mock wallet: joining during boarding, liftoff, a fuel can burning exactly 1 RF, pausing mid-flight (the multiplier freezes), resuming, ejecting or a valid crash, crash history, a Hangar purchase burning exactly 25 RF, the Flames tab, Burn for glory, auto-launch, and the sound toggle. No browser errors.
+- `npm run typecheck`: strict TypeScript across all game sources, 0 errors.
 - `npx friendsdk check games/moonshot` (valid), and `npx friendsdk test` at 1200 px and 360 px.
 
 **Known limitations**
