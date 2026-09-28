@@ -4,7 +4,7 @@
 **Builder:** Ishan · GitHub [bbczzzs](https://github.com/bbczzzs) · X: TBD
 **One-sentence pitch:** A live crash game where your Rare Friend pilots a rocket carrying a crew of real Generations Friends, and **10% of every stake burns as rocket fuel on every launch, win or lose**, with a fresh launch every ~15 seconds.
 
-![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/moonshot-demo.gif)
+![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/76b034c/media/moonshot-demo.gif)
 
 ## Demo
 
@@ -15,11 +15,13 @@
 
 | Liftoff | Flight | Crash | Hangar |
 |---|---|---|---|
-| ![Liftoff](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/liftoff.png) | ![Flight](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/flight.png) | ![Crash](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/crash.png) | ![Hangar](https://raw.githubusercontent.com/bbczzzs/moonshot/f06e201/media/hangar.png) |
+| ![Liftoff](https://raw.githubusercontent.com/bbczzzs/moonshot/76b034c/media/liftoff.png) | ![Flight](https://raw.githubusercontent.com/bbczzzs/moonshot/76b034c/media/flight.png) | ![Crash](https://raw.githubusercontent.com/bbczzzs/moonshot/76b034c/media/crash.png) | ![Hangar](https://raw.githubusercontent.com/bbczzzs/moonshot/76b034c/media/hangar.png) |
 
 ## Source
 
 https://github.com/bbczzzs/moonshot. The game is in `games/moonshot/` (full rules, math and checks in its [README](https://github.com/bbczzzs/moonshot/blob/main/games/moonshot/README.md)).
+
+**Look:** drawn in the Rare Friends world style with the FriendSDK game palette (meadow, pond, sun, coral, lilac, signal), ink outlines and dither shading, on a floating meadow island. The UI follows the SDK frame (paper, ink, square corners, hard shadows).
 
 **Stack:** FriendSDK **v0.1.2** (runtime, wallet/Friend selection, ownership gate, `createFriendReader` sprites) · React 19 · Canvas 2D pixel renderer · WebAudio. All art is drawn in code and all sound is synthesized.
 
@@ -79,4 +81,4 @@ npx friendsdk build games/moonshot --outdir dist    # static build
 
 ## Asset credits
 
-All scenery, rocket, planets, particles and UI are drawn in code. All audio is synthesized with WebAudio. Friend sprites are canonical Rare Friends Generations artwork via FriendSDK (see its `NOTICE.md`). Pixel font: Press Start 2P (OFL).
+All scenery, rocket, planets, particles and UI are drawn in code. All audio is synthesized with WebAudio. Friend sprites are canonical Rare Friends Generations artwork via FriendSDK (see its `NOTICE.md`). Fonts: Silkscreen, Sometype Mono and Archivo (all SIL OFL, bundled).
