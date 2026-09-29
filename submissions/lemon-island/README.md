@@ -94,7 +94,7 @@ All of these pass:
 - `npx friendsdk check games/lemon` (valid) and `npx friendsdk test` at 1200 px and 360 px.
 - `npm run economy`: 4 strategies × 25 seeds × 60 days, deterministic.
 - The live RF supply read was checked against Robinhood mainnet; the public Pages build and preview load with no errors.
-- Real-wallet playtest on the public preview: pending (builder).
+- **Real-wallet playtest: done** by the builder on the public GitHub Pages preview (Robinhood mainnet, owned hardwired Generations Friend).
 
 **Known limitations**
 - The crowd, rival tycoons and farmer purchases are simulated (the SDK has no multiplayer or shared state); they are labelled as such.
