@@ -2,7 +2,7 @@
 
 ![Moonshot gameplay](https://raw.githubusercontent.com/bbczzzs/moonshot/49bcd6c/media/moonshot-demo.gif)
 
-🎮 **Play: https://bbczzzs.github.io/moonshot/** · 📦 [Source](https://github.com/bbczzzs/moonshot)
+🎮 **Play: https://bbczzzs.github.io/moonshot/** · 👀 **No wallet? [Preview page](https://bbczzzs.github.io/moonshot/preview/)** · 📦 [Source](https://github.com/bbczzzs/moonshot)
 
 🎬 [Watch the full recording (MP4)](https://github.com/bbczzzs/moonshot/blob/main/media/moonshot-demo.mp4)
 
