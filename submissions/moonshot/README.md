@@ -89,6 +89,8 @@ Space: bet / cancel / eject · H: eject half · tap the sky to eject · F: fuel 
 **Playable demo / how to run**
 https://bbczzzs.github.io/moonshot/ (GitHub Pages) requires a browser wallet on **Robinhood mainnet (4663)** holding a hardwired Generations NFT (generation ≥ 1). This is the SDK's standard gate. Connecting only reads: no RF, signatures or transactions. The GIF and MP4 above show gameplay for anyone without a wallet.
 
+Built with **FriendSDK v0.1.4** (rebuilt 2026-09-29). v0.1.4 fixes the "Could not load this account's Friend transfers" error that v0.1.2 games now hit, because the public Robinhood RPC rejects log reads spanning more than 10,000,000 blocks. Checked against the live RPC: a real holder's Friends load and the game opens.
+
 ```sh
 git clone https://github.com/bbczzzs/moonshot && cd moonshot
 npm install
